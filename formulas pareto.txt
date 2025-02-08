@@ -1,0 +1,21 @@
+// calcula o lucro total obtido na empresa
+Lucro Total = SUM(Vendas[Lucro da Venda])
+
+//calcula o ranking do lucro de cada marca no lucro total
+Ranking = RANKX(ALL(Vendas[Marca]), [Lucro Total])
+
+//calcula o lucro total acumulado das empresas conforme o ranking
+Lucro Acumulado = CALCULATE([Lucro Total], TOPN([Ranking], ALL(Vendas[Marca]), [Lucro Total])) 
+
+//calcula a % de lucro que a somatória equivale no total
+% de Lucro Acumulado = DIVIDE([Lucro Acumulado], CALCULATE([Lucro Total], ALL(Vendas[Marca])), "Erro na divisão")
+
+
+// calcula a quantidade total de produtos da empresa
+QTd. Produtos = DISTINCTCOUNT(Vendas[Produto])
+
+//calcula a quantidade total acumulada de produtos das marcas conforme o ranking
+Produtos Acumulados = CALCULATE([QTd. Produtos], TOPN([Ranking], ALL(Vendas[Marca]), [Lucro Total]))
+
+//calcula a % de produtos no estoque que equivalem ao total de produtos do todo
+% Produtos Acumulados = DIVIDE([Produtos Acumulados], CALCULATE([QTd. Produtos], ALL(Vendas[Marca])), "Erro no calculo")
